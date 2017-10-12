@@ -12,7 +12,9 @@ public class Main {
             ServletHandler servletHandler = new ServletHandler();
             server.setHandler(servletHandler);
 
-            servletHandler.addServletWithMapping(HelloServlet.class, "/*");
+            servletHandler.addFilterWithMapping(Identification.class, "/question", 0);
+
+            servletHandler.addServletWithMapping(QuizQuestions.class, "/question");
 
             server.start();
             server.join();
