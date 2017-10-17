@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <context-param>
+        <param-name>DBURL</param-name>
+        <param-value>https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/3003917f77834b5cc54d41dc3bf7a3dfd4c3515e/gistfile1.txt</param-value>
+    </context-param>
+    <listener>
+        <listener-class>quiz.listener.QuizContextListener</listener-class>
+    </listener>
+</web-app>
