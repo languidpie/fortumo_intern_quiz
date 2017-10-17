@@ -1,0 +1,3 @@
+2;Which city is Estonia's 2nd largest city?;geography;3;Tartu
+3;What kind of animal is the largest living creature on Earth;nature;1;Whale
+4;Which plant does the Canadian flag contain?;nature;1;Maple
