@@ -2,8 +2,8 @@ package quiz;
 
 import java.util.Map;
 
+@FunctionalInterface
 public interface QuestionsDAO {
 
-    //TODO: Find questions method
     Map<Integer, Question> findAllQuestions();
 }

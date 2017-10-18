@@ -9,26 +9,21 @@ import javax.servlet.DispatcherType;
 
 public class Main {
 
-    public static void main(String[] args) {
-        int PORT = Integer.parseInt(System.getenv("PORT"));
-        String quesitonDB = System.getenv("DATABASE");
-        Server server = new Server(PORT);
-        try {
-            ServletContextHandler servletHandler = new ServletContextHandler();
-            //            ListenerHolder listenernerHolder = new ListenerHolder(Source.EMBEDDED);
-            //            listenerHolder.setListener(new QuizContextListener(quesitonDB));
-            servletHandler.addEventListener(new QuizContextListener(quesitonDB));
+    private static final int PORT = Integer.parseInt(System.getenv("PORT"));
+    private static final String PATH = "/question";
 
-            servletHandler.addFilter(Identification.class, "/question", EnumSet.of(DispatcherType.REQUEST));
+    private Main() {
+    }
 
-            servletHandler.addServlet(QuizQuestions.class, "/question");
-            server.setHandler(servletHandler);
-
-            server.start();
-            server.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Something went wrong during server start");
-        }
+    public static void main(String[] args) throws Exception {
+        final String questionDB = System.getenv("DATABASE");
+        final ServletContextHandler servletHandler = new ServletContextHandler();
+        servletHandler.addEventListener(new QuizContextListener(questionDB));
+        final Server server = new Server(PORT);
+        servletHandler.addFilter(Identification.class, PATH, EnumSet.of(DispatcherType.REQUEST));
+        servletHandler.addServlet(QuizQuestions.class, PATH);
+        server.setHandler(servletHandler);
+        server.start();
+        server.join();
     }
 }

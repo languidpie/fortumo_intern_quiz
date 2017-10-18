@@ -43,7 +43,7 @@ public class Question {
     }
 
     public void addAnswer(String answer) {
-        if (answers == null) {
+        if (this.answers == null) {
             this.answers = new ArrayList<>();
         }
         this.answers.add(answer);
@@ -51,11 +51,11 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" +
-                "question='" + question + '\'' +
-                ", category='" + category + '\'' +
-                ", difficulty=" + difficulty +
-                ", answers=" + answers +
-                '}';
+        return "Question{"
+                + "question='" + this.question + '\''
+                + ", category='" + this.category + '\''
+                + ", difficulty=" + this.difficulty
+                + ", answers=" + this.answers
+                + '}';
     }
 }

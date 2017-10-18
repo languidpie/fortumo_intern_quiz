@@ -21,15 +21,12 @@ public class Identification implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException
     {
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-
-        String candidate = ((HttpServletRequest) request).getHeader("x-player-name");
+        final String candidate = ((HttpServletRequest) request).getHeader("x-player-name");
 
         if (candidate != null) {
             chain.doFilter(request, response);
         } else {
-            ((HttpServletResponse) response).sendError(400, "Please use x-player-name");
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "Please use x-player-name");
         }
     }
 
