@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class DBConnectionManager implements QuestionsDAO {
 
@@ -25,11 +24,8 @@ public class DBConnectionManager implements QuestionsDAO {
     private static final int MULTIPLE_ANSWER_INDEX = 5;
     private final String dbURL;
     private final OkHttpClient okHttpClient = new OkHttpClient();
-    private Call call;
-    private String name = "";
-    private String questions;
     private Map<Integer, Question> allQuestions;
-    private int count;
+    //    private int count;
 
     public DBConnectionManager(String dbURL) {
         this.dbURL = dbURL;
@@ -37,53 +33,45 @@ public class DBConnectionManager implements QuestionsDAO {
 
     public void load() throws IOException {
         final Request request = new Request.Builder().url(this.dbURL).build();
-        this.call = this.okHttpClient.newCall(request);
-        final Response response = this.call.execute();
+        final Call call = this.okHttpClient.newCall(request);
+        final Response response = call.execute();
 
-        this.questions = response.body().string();
+        final String questions = response.body().string();
 
-        if (this.name.isEmpty()) {
-            System.out.println("What is your name?");
-            final Scanner scanner = new Scanner(System.in);
-            this.name = scanner.nextLine();
-        }
+        this.allQuestions = this.findAllQuestions(questions);
 
-        System.out.println("Hello " + this.name);
-
-        this.allQuestions = this.findAllQuestions(this.questions);
-
-        this.questionGame();
+        //        this.questionGame();
     }
 
-    private void questionGame() {
-
-        if (this.count < this.allQuestions.size()) {
-            if (this.showQuestion()) {
-                System.out.println("Congratulations! Do you want another question? y/n");
-                this.returnPlayerResponse(this.fetchUserAnswer());
-            } else {
-                System.out.println("Oops, that was wrong. Do you want to try again? y/n");
-                this.returnPlayerResponse(this.fetchUserAnswer());
-            }
-        }
-    }
-
-    private void returnPlayerResponse(String reply) {
-        switch (reply) {
-            case "y":
-                if (this.count == this.allQuestions.size()) {
-                    this.count = 0;
-                    this.questionGame();
-                } else {
-                    this.questionGame();
-                }
-                break;
-            default:
-                System.out.println("The game is shutting down. Thanks for playing!");
-                this.call.cancel();
-                break;
-        }
-    }
+    //    private void questionGame() {
+    //
+    //        if (this.count < this.allQuestions.size()) {
+    //            if (this.showQuestion()) {
+    //                System.out.println("Congratulations! Do you want another question? y/n");
+    //                this.returnPlayerResponse(this.fetchUserAnswer());
+    //            } else {
+    //                System.out.println("Oops, that was wrong. Do you want to try again? y/n");
+    //                this.returnPlayerResponse(this.fetchUserAnswer());
+    //            }
+    //        }
+    //    }
+    //
+    //    private void returnPlayerResponse(String reply) {
+    //        switch (reply) {
+    //            case "y":
+    //                if (this.count == this.allQuestions.size()) {
+    //                    this.count = 0;
+    //                    this.questionGame();
+    //                } else {
+    //                    this.questionGame();
+    //                }
+    //                break;
+    //            default:
+    //                System.out.println("The game is shutting down. Thanks for playing!");
+    //                this.call.cancel();
+    //                break;
+    //        }
+    //    }
 
     public Map<Integer, Question> findAllQuestions(String questions) {
 
@@ -117,32 +105,32 @@ public class DBConnectionManager implements QuestionsDAO {
         return result;
     }
 
-    public Boolean showQuestion() {
-        final List<Integer> questId = this.getQuestionId();
-
-        final Question question = this.allQuestions.get(questId.get(this.count));
-        System.out.println("("
-                + String.valueOf(question.getDifficulty())
-                + ","
-                + question.getCategory()
-                + ") "
-                + question.getQuestion());
-
-        final String answer = this.fetchUserAnswer();
-
-        this.count++;
-
-        return question.getAnswers().contains(answer);
-    }
-
-    private String fetchUserAnswer() {
-        final Scanner scanner = new Scanner(System.in);
-
-        return scanner.next();
-    }
-
-    private List<Integer> getQuestionId() {
-
-        return new ArrayList<>(this.allQuestions.keySet());
-    }
+//    public Boolean showQuestion() {
+//        final List<Integer> questId = this.getQuestionId();
+//
+//        final Question question = this.allQuestions.get(questId.get(this.count));
+//        System.out.println("("
+//                + String.valueOf(question.getDifficulty())
+//                + ","
+//                + question.getCategory()
+//                + ") "
+//                + question.getQuestion());
+//
+//        final String answer = this.fetchUserAnswer();
+//
+//        this.count++;
+//
+//        return question.getAnswers().contains(answer);
+//    }
+//
+//    private String fetchUserAnswer() {
+//        final Scanner scanner = new Scanner(System.in);
+//
+//        return scanner.next();
+//    }
+//
+//    private List<Integer> getQuestionId() {
+//
+//        return new ArrayList<>(this.allQuestions.keySet());
+//    }
 }
