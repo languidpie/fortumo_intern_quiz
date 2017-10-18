@@ -50,7 +50,7 @@ public class DBConnectionManager implements QuestionsDAO {
 
         System.out.println("Hello " + this.name);
 
-        this.allQuestions = this.findAllQuestions();
+        this.allQuestions = this.findAllQuestions(this.questions);
 
         this.questionGame();
     }
@@ -85,12 +85,11 @@ public class DBConnectionManager implements QuestionsDAO {
         }
     }
 
-    @Override
-    public Map<Integer, Question> findAllQuestions() {
+    public Map<Integer, Question> findAllQuestions(String questions) {
 
         final Map<Integer, Question> result = new HashMap<>();
 
-        final String[] list = this.questions.split("\n");
+        final String[] list = questions.split("\n");
 
         for (String string : list) {
             final String[] questionSep = string.split(";");
@@ -103,7 +102,7 @@ public class DBConnectionManager implements QuestionsDAO {
                 question.setDifficulty(Integer.parseInt(questionSep[DIFFICULTY_INDEX]));
 
                 /* Checks if there are multiple answers */
-                if (questionSep.length > MULTIPLE_ANSWER_INDEX) {
+                if (questionSep.length < MULTIPLE_ANSWER_INDEX) {
                     question.addAnswer(questionSep[ANSWER_INDEX]);
                 } else {
                     final List<String> answers = new ArrayList<>();
