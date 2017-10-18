@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import quiz.Question;
+import quiz.QuestionQuiz;
 import quiz.QuestionsDAO;
 
 import java.io.IOException;
@@ -39,6 +40,10 @@ public class DBConnectionManager implements QuestionsDAO {
         final String questions = response.body().string();
 
         this.allQuestions = this.findAllQuestions(questions);
+
+        final QuestionQuiz questionQuiz = new QuestionQuiz();
+
+        questionQuiz.startGame(this.allQuestions);
 
         //        this.questionGame();
     }
@@ -81,9 +86,11 @@ public class DBConnectionManager implements QuestionsDAO {
 
         for (String string : list) {
             final String[] questionSep = string.split(";");
+            /* Checks if a question with the given id already exists */
             if (result.containsKey(Integer.parseInt(questionSep[0]))) {
                 System.out.println("Question with this id already exists!");
             } else {
+                /* Question creation - setting question, category, difficulty*/
                 final Question question = new Question();
                 question.setQuestion(questionSep[QUESTION_INDEX]);
                 question.setCategory(questionSep[CATEGORY_INDEX]);
@@ -91,13 +98,16 @@ public class DBConnectionManager implements QuestionsDAO {
 
                 /* Checks if there are multiple answers */
                 if (questionSep.length < MULTIPLE_ANSWER_INDEX) {
+                    /* Adds one answer if there are no multiple answers */
                     question.addAnswer(questionSep[ANSWER_INDEX]);
                 } else {
+                    /* Adds multiple answers if there are any */
                     final List<String> answers = new ArrayList<>();
                     final String[] givenAnswers = Arrays.copyOfRange(questionSep, 4, questionSep.length);
                     Collections.addAll(answers, givenAnswers);
                     question.setAnswers(answers);
                 }
+                /* Parses question id and adds it to the result list with the corresponding question */
                 final int questionId = Integer.parseInt(questionSep[0]);
                 result.put(questionId, question);
             }
@@ -105,32 +115,32 @@ public class DBConnectionManager implements QuestionsDAO {
         return result;
     }
 
-//    public Boolean showQuestion() {
-//        final List<Integer> questId = this.getQuestionId();
-//
-//        final Question question = this.allQuestions.get(questId.get(this.count));
-//        System.out.println("("
-//                + String.valueOf(question.getDifficulty())
-//                + ","
-//                + question.getCategory()
-//                + ") "
-//                + question.getQuestion());
-//
-//        final String answer = this.fetchUserAnswer();
-//
-//        this.count++;
-//
-//        return question.getAnswers().contains(answer);
-//    }
-//
-//    private String fetchUserAnswer() {
-//        final Scanner scanner = new Scanner(System.in);
-//
-//        return scanner.next();
-//    }
-//
-//    private List<Integer> getQuestionId() {
-//
-//        return new ArrayList<>(this.allQuestions.keySet());
-//    }
+    //    public Boolean showQuestion() {
+    //        final List<Integer> questId = this.getQuestionId();
+    //
+    //        final Question question = this.allQuestions.get(questId.get(this.count));
+    //        System.out.println("("
+    //                + String.valueOf(question.getDifficulty())
+    //                + ","
+    //                + question.getCategory()
+    //                + ") "
+    //                + question.getQuestion());
+    //
+    //        final String answer = this.fetchUserAnswer();
+    //
+    //        this.count++;
+    //
+    //        return question.getAnswers().contains(answer);
+    //    }
+    //
+    //    private String fetchUserAnswer() {
+    //        final Scanner scanner = new Scanner(System.in);
+    //
+    //        return scanner.next();
+    //    }
+    //
+    //    private List<Integer> getQuestionId() {
+    //
+    //        return new ArrayList<>(this.allQuestions.keySet());
+    //    }
 }
