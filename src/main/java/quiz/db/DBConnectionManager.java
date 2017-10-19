@@ -44,39 +44,7 @@ public class DBConnectionManager implements QuestionsDAO {
         final QuestionQuiz questionQuiz = new QuestionQuiz();
 
         questionQuiz.startGame(this.allQuestions);
-
-        //        this.questionGame();
     }
-
-    //    private void questionGame() {
-    //
-    //        if (this.count < this.allQuestions.size()) {
-    //            if (this.showQuestion()) {
-    //                System.out.println("Congratulations! Do you want another question? y/n");
-    //                this.returnPlayerResponse(this.fetchUserAnswer());
-    //            } else {
-    //                System.out.println("Oops, that was wrong. Do you want to try again? y/n");
-    //                this.returnPlayerResponse(this.fetchUserAnswer());
-    //            }
-    //        }
-    //    }
-    //
-    //    private void returnPlayerResponse(String reply) {
-    //        switch (reply) {
-    //            case "y":
-    //                if (this.count == this.allQuestions.size()) {
-    //                    this.count = 0;
-    //                    this.questionGame();
-    //                } else {
-    //                    this.questionGame();
-    //                }
-    //                break;
-    //            default:
-    //                System.out.println("The game is shutting down. Thanks for playing!");
-    //                this.call.cancel();
-    //                break;
-    //        }
-    //    }
 
     public Map<Integer, Question> findAllQuestions(String questions) {
 
@@ -114,33 +82,4 @@ public class DBConnectionManager implements QuestionsDAO {
         }
         return result;
     }
-
-    //    public Boolean showQuestion() {
-    //        final List<Integer> questId = this.getQuestionId();
-    //
-    //        final Question question = this.allQuestions.get(questId.get(this.count));
-    //        System.out.println("("
-    //                + String.valueOf(question.getDifficulty())
-    //                + ","
-    //                + question.getCategory()
-    //                + ") "
-    //                + question.getQuestion());
-    //
-    //        final String answer = this.fetchUserAnswer();
-    //
-    //        this.count++;
-    //
-    //        return question.getAnswers().contains(answer);
-    //    }
-    //
-    //    private String fetchUserAnswer() {
-    //        final Scanner scanner = new Scanner(System.in);
-    //
-    //        return scanner.next();
-    //    }
-    //
-    //    private List<Integer> getQuestionId() {
-    //
-    //        return new ArrayList<>(this.allQuestions.keySet());
-    //    }
 }
