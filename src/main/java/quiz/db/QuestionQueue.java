@@ -14,6 +14,7 @@ public class QuestionQueue {
         this.questionMap = questionsDAO.findAllQuestions();
     }
 
+
     //TODO: Luua test, mis testib selle meetodi funktsionaalsust.
     public Question nextQuestion() {
         final Question question;
