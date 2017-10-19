@@ -1,8 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+mainClassName = 'quiz.Main'
+
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -19,4 +21,3 @@ dependencies {
 
 }
 
-mainClassName = 'quiz.Main'

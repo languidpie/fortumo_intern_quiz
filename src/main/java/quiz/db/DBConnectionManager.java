@@ -5,7 +5,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import quiz.Question;
-import quiz.QuestionQuiz;
 import quiz.QuestionsDAO;
 
 import java.io.IOException;
@@ -39,14 +38,10 @@ public class DBConnectionManager implements QuestionsDAO {
 
         final String questions = response.body().string();
 
-        this.allQuestions = this.findAllQuestions(questions);
-
-        final QuestionQuiz questionQuiz = new QuestionQuiz();
-
-        questionQuiz.startGame(this.allQuestions);
+        this.allQuestions = this.parseQuestions(questions);
     }
 
-    public Map<Integer, Question> findAllQuestions(String questions) {
+    public Map<Integer, Question> parseQuestions(String questions) {
 
         final Map<Integer, Question> result = new HashMap<>();
 
@@ -81,5 +76,10 @@ public class DBConnectionManager implements QuestionsDAO {
             }
         }
         return result;
+    }
+
+    @Override
+    public Map<Integer, Question> findAllQuestions() {
+        return this.allQuestions;
     }
 }

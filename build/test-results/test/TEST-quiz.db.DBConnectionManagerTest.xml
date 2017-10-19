@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="quiz.db.DBConnectionManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2017-10-19T13:45:17" hostname="fortumos-MacBook-Pro.local" time="0.013">
+  <properties/>
+  <testcase name="should_return_correct_response_if_question_id_already_exists" classname="quiz.db.DBConnectionManagerTest" time="0.006"/>
+  <testcase name="should_create_a_question_with_multiple_answers" classname="quiz.db.DBConnectionManagerTest" time="0.001"/>
+  <testcase name="should_create_a_question_with_only_one_answer" classname="quiz.db.DBConnectionManagerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

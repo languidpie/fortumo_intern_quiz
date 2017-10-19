@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\jetty-io-7.0.0.M2.jar;%APP_HOME%\lib\javax.servlet-api-3.1.0.jar;%APP_HOME%\lib\jetty-util-7.0.0.M2.jar;%APP_HOME%\lib\jetty-continuation-7.0.0.M2.jar;%APP_HOME%\lib\servlet-api-2.5.jar;%APP_HOME%\lib\fortumo_intern_quiz.jar;%APP_HOME%\lib\jetty-security-7.0.0.M2.jar;%APP_HOME%\lib\jetty-http-7.0.0.M2.jar;%APP_HOME%\lib\jetty-servlet-7.0.0.M2.jar;%APP_HOME%\lib\jetty-server-7.0.0.M2.jar
+set CLASSPATH=%APP_HOME%\lib\jetty-servlet-9.4.6.v20170531.jar;%APP_HOME%\lib\okio-1.13.0.jar;%APP_HOME%\lib\jetty-server-9.4.6.v20170531.jar;%APP_HOME%\lib\jetty-http-9.4.6.v20170531.jar;%APP_HOME%\lib\javax.servlet-api-3.1.0.jar;%APP_HOME%\lib\commons-io-2.4.jar;%APP_HOME%\lib\fortumo_intern_quiz.jar;%APP_HOME%\lib\jetty-io-9.4.6.v20170531.jar;%APP_HOME%\lib\okhttp-3.9.0.jar;%APP_HOME%\lib\jetty-util-9.4.6.v20170531.jar;%APP_HOME%\lib\jetty-security-9.4.6.v20170531.jar
 
 @rem Execute fortumo_intern_quiz
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %FORTUMO_INTERN_QUIZ_OPTS%  -classpath "%CLASSPATH%" quiz.Main %CMD_LINE_ARGS%

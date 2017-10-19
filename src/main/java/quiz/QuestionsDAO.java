@@ -5,5 +5,5 @@ import java.util.Map;
 @FunctionalInterface
 public interface QuestionsDAO {
 
-    Map<Integer, Question> findAllQuestions(String questions);
+    Map<Integer, Question> findAllQuestions();
 }

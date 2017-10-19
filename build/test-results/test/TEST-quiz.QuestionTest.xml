@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="quiz.QuestionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-10-19T13:45:17" hostname="fortumos-MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="should_have_correct_values_on_given_question_id" classname="quiz.QuestionTest" time="0.001"/>
+  <testcase name="should_have_multiple_answers_in_list" classname="quiz.QuestionTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
