@@ -5,6 +5,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import quiz.listener.QuizContextListener;
 
 import java.util.EnumSet;
+import java.util.Scanner;
 import javax.servlet.DispatcherType;
 
 public class Main {
@@ -16,6 +17,14 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
+        /* Asking for user name */
+        System.out.println("What is your name?");
+        final Scanner scanner = new Scanner(System.in);
+        final String userName = scanner.nextLine();
+
+        System.out.println("Hello " + userName);
+
+        /* Launching server */
         final String questionDB = System.getenv("DATABASE");
         final ServletContextHandler servletHandler = new ServletContextHandler();
         servletHandler.addEventListener(new QuizContextListener(questionDB));
