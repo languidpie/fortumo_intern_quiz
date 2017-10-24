@@ -14,13 +14,12 @@ public class QuestionQueue {
         this.questionMap = questionsDAO.findAllQuestions();
     }
 
-    //TODO: Luua test, mis testib selle meetodi funktsionaalsust.
     public Question nextQuestion() {
         final Question question;
 
         if (this.count == this.questionMap.size()) {
             question = this.questionMap.get(this.count);
-            this.count = 0;
+            this.count = 1;
         } else {
             question = this.questionMap.get(this.count);
             this.count++;

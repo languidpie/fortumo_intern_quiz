@@ -1,58 +1,55 @@
 package quiz.db;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import quiz.Question;
 import quiz.QuestionsDAO;
 
-import java.io.FileReader;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 
 public class QuestionQueueTest {
 
-    private QuestionQueue questionQueue;
-    Type collectionType = new TypeToken<Collection<Question>>() {
-    }.getType();
-
-    Gson gson = new Gson();
-    JsonReader jsonReader;
-    Collection<Question> questionCollection;
     private QuestionsDAO questionDAO;
 
     @Before
     public void setUp() throws Exception {
         this.questionDAO = Mockito.mock(QuestionsDAO.class);
-        this.questionQueue = new QuestionQueue(questionDAO);
 
-        this.jsonReader = new JsonReader(
-                new FileReader("/Users/mariliis/repos/fortumo_intern_quiz/src/test/resources/questionsSample")); /* Different pathing doesn't work atm */
-    /* Deserializing JSON file*/
-        this.questionCollection = this.gson.fromJson(
-                this.jsonReader,
-                this.collectionType);
+        final Map<Integer, Question> questions = new HashMap<>();
+        final Question firstQuestion = new Question();
+        firstQuestion.setQuestion("Test question 1");
+        firstQuestion.setDifficulty(1);
+        firstQuestion.setCategory("test_category");
+        firstQuestion.setAnswers(Arrays.asList("first answer", "second answer"));
+        questions.put(1, firstQuestion);
+
+        final Question secondQuestion = new Question();
+        secondQuestion.setQuestion("Test question 2");
+        secondQuestion.setDifficulty(2);
+        secondQuestion.setCategory("test_category");
+        secondQuestion.setAnswers(Arrays.asList("first answer", "second answer"));
+        questions.put(2, secondQuestion);
+
+        Mockito.when(this.questionDAO.findAllQuestions()).thenReturn(questions);
     }
 
     @Test
     public void should_return_next_question() throws Exception {
         //given
-        final Iterator<Question> questionIterator = this.questionCollection.iterator();
-
+        final QuestionQueue queue = new QuestionQueue(this.questionDAO);
+        final Question testQuestion = queue.nextQuestion(); //Do not delete. Is necessary for the test to work.
 
         //when
-        when(this.questionQueue.nextQuestion().getQuestion()).thenReturn(questionIterator.next().getQuestion())
-                                                             .thenReturn(questionIterator.next().getQuestion());
+        String question1 = queue.nextQuestion().getQuestion();
+        String question2 = queue.nextQuestion().getQuestion();
 
         //then
-        verify(this.questionQueue, atLeastOnce()).nextQuestion().getQuestion().equals("Kes on tubli poiss?");
+        assertEquals(question1, "Test question 1");
+        assertEquals(question2, "Test question 2");
     }
 }
