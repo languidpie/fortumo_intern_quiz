@@ -13,6 +13,8 @@ public class QuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
-        QuizContextListener.getQuestionQueue().nextQuestion();
+        Question question = QuizContextListener.getQuestionQueue().nextQuestion();
+
     }
+
 }

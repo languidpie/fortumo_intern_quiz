@@ -8,7 +8,7 @@ import java.util.Map;
 public class QuestionQueue {
 
     private final Map<Integer, Question> questionMap;
-    private int count;
+    private int count = 1;
 
     public QuestionQueue(QuestionsDAO questionsDAO) {
         this.questionMap = questionsDAO.findAllQuestions();
