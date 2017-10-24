@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "question": "Kes on tubli poiss?",
+    "category": "general",
+    "difficulty": 1
+  },
+  {
+    "id": "2",
+    "question": "Which city is Estonia's 2nd largest city?",
+    "category": "geography",
+    "difficulty": 3
+  },
+  {
+    "id": "3",
+    "question": "What kind of animal is the largest living creature on Earth?",
+    "category": "nature",
+    "difficulty": 1
+  },
+  {
+    "id": "4",
+    "question": "Which plant does the Canadian flag contain?",
+    "category": "nature",
+    "difficulty": 1
+  },
+  {
+    "id": "5",
+    "question": "It's fun to stay where?",
+    "category": "music",
+    "difficulty": 3
+  }
+]

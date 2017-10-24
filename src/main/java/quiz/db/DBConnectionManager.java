@@ -25,7 +25,6 @@ public class DBConnectionManager implements QuestionsDAO {
     private final String dbURL;
     private final OkHttpClient okHttpClient = new OkHttpClient();
     private Map<Integer, Question> allQuestions;
-    //    private int count;
 
     public DBConnectionManager(String dbURL) {
         this.dbURL = dbURL;
@@ -39,6 +38,7 @@ public class DBConnectionManager implements QuestionsDAO {
         final String questions = response.body().string();
 
         this.allQuestions = this.parseQuestions(questions);
+
     }
 
     public Map<Integer, Question> parseQuestions(String questions) {

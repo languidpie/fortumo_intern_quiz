@@ -39,12 +39,8 @@ public class DBConnectionManagerTest {
         //given
         FileInputStream inputStream = new FileInputStream("gistfile2.txt");
 
-        String questionsFile = IOUtils.toString(inputStream);
-
-        inputStream.close();
-
         //when
-        dbConnectionManager.findAllQuestions(questionsFile);
+        dbConnectionManager.findAllQuestions();
 
         //then
         assertEquals("Question with this id already exists!\n", outContent.toString());
@@ -60,7 +56,7 @@ public class DBConnectionManagerTest {
         list.add("Oskar");
 
         //when
-        Map<Integer, Question> questionMap = dbConnectionManager.findAllQuestions(questionString);
+        Map<Integer, Question> questionMap = dbConnectionManager.findAllQuestions();
 
         //then
         assertTrue(questionMap.get(1).getAnswers().containsAll(list));
@@ -75,7 +71,7 @@ public class DBConnectionManagerTest {
         stringList.add("Maple");
 
         //when
-        Map<Integer, Question> questionMap = dbConnectionManager.findAllQuestions(question);
+        Map<Integer, Question> questionMap = dbConnectionManager.findAllQuestions();
 
         //then
         assertTrue(questionMap.get(4).getAnswers().containsAll(stringList));

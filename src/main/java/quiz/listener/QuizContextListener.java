@@ -1,6 +1,7 @@
 package quiz.listener;
 
 import quiz.db.DBConnectionManager;
+import quiz.db.QuestionQueue;
 
 import java.io.IOException;
 import javax.servlet.ServletContextEvent;
@@ -9,6 +10,8 @@ import javax.servlet.annotation.WebListener;
 
 @WebListener
 public class QuizContextListener implements ServletContextListener {
+
+    private static QuestionQueue questionQueue;
 
     private final String url;
 
@@ -21,6 +24,7 @@ public class QuizContextListener implements ServletContextListener {
         final DBConnectionManager dbConnectionManager = new DBConnectionManager(this.url);
         try {
             dbConnectionManager.load();
+            questionQueue = new QuestionQueue(dbConnectionManager);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,5 +33,9 @@ public class QuizContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
 
+    }
+
+    public static QuestionQueue getQuestionQueue() {
+        return questionQueue;
     }
 }
