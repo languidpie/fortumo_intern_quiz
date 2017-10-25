@@ -17,13 +17,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        /* Asking for user name */
-        System.out.println("What is your name?");
-        final Scanner scanner = new Scanner(System.in);
-        final String userName = scanner.nextLine();
-
-        System.out.println("Hello " + userName);
-
         /* Launching server */
         final String questionDB = System.getenv("DATABASE");
         final ServletContextHandler servletHandler = new ServletContextHandler();

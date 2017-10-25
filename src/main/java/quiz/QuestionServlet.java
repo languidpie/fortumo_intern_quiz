@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import quiz.listener.QuizContextListener;
 
 import java.io.IOException;
+import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,15 @@ public class QuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
+        /* Asking for user name */
+        System.out.println("What is your name?");
+        final Scanner scanner = new Scanner(System.in);
+        final String userName = scanner.nextLine();
+
+        System.out.println("Hello " + userName);
+
+        resp.setHeader("x-player-name", userName);
+
         final Question question = QuizContextListener.getQuestionQueue().nextQuestion();
 
         final GsonBuilder gsonBuilder = new GsonBuilder();
