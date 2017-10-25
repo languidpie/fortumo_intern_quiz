@@ -17,6 +17,8 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+
+//TODO: Redo tests since DBConnectionManager logic changed
 public class DBConnectionManagerTest {
 
     private String questions;

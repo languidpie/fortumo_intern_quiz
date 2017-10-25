@@ -14,14 +14,6 @@ public class AnswersServlet extends HttpServlet {
 
     private static Map<Integer, Question> questionMap;
 
-    public static Map<Integer, Question> getQuestionMap() {
-        return questionMap;
-    }
-
-    public static void setQuestionMap(Map<Integer, Question> questionMap) {
-        AnswersServlet.questionMap = questionMap;
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String answer = req.getReader().lines().collect(Collectors.joining());
@@ -29,10 +21,19 @@ public class AnswersServlet extends HttpServlet {
         try {
             final AnswerView answerView = new Gson().fromJson(answer, AnswerView.class);
             final AnswerAssertion answerAssertion = new AnswerAssertion();
-            answerAssertion.assertAnswer(questionMap, answerView, resp);
+            String assertion = answerAssertion.assertAnswer(questionMap, answerView);
+            resp.getWriter().write(assertion);
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Invalid input!");
         }
+    }
+
+    public static Map<Integer, Question> getQuestionMap() {
+        return questionMap;
+    }
+
+    public static void setQuestionMap(Map<Integer, Question> questionMap) {
+        AnswersServlet.questionMap = questionMap;
     }
 }
