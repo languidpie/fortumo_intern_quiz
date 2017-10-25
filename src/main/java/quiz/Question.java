@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Question {
 
+    private int id;
     private String question;
     private String category;
     private int difficulty;
@@ -52,10 +53,19 @@ public class Question {
     @Override
     public String toString() {
         return "Question{"
+                + "id='" + this.id + '\''
                 + "question='" + this.question + '\''
                 + ", category='" + this.category + '\''
                 + ", difficulty=" + this.difficulty
                 + ", answers=" + this.answers
                 + '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

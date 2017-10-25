@@ -42,14 +42,15 @@ public class QuestionQueueTest {
     public void should_return_next_question() throws Exception {
         //given
         final QuestionQueue queue = new QuestionQueue(this.questionDAO);
-        final Question testQuestion = queue.nextQuestion(); //Do not delete. Is necessary for the test to work.
 
         //when
         String question1 = queue.nextQuestion().getQuestion();
         String question2 = queue.nextQuestion().getQuestion();
+        String question3 = queue.nextQuestion().getQuestion();
 
         //then
         assertEquals(question1, "Test question 1");
         assertEquals(question2, "Test question 2");
+        assertEquals(question3, "Test question 1");
     }
 }

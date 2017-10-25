@@ -30,11 +30,12 @@ public class QuestionTest {
 
     @Test
     public void should_have_multiple_answers_in_list() {
+        //TODO
 
     }
 
     @Test
     public void should_have_correct_values_on_given_question_id() {
-
+            //TODO
     }
 }

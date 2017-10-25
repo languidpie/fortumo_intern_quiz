@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class DBConnectionManager implements QuestionsDAO {
 
+    private static final int ID_INDEX = 0;
     private static final int QUESTION_INDEX = 1;
     private static final int CATEGORY_INDEX = 2;
     private static final int DIFFICULTY_INDEX = 3;
@@ -38,7 +39,6 @@ public class DBConnectionManager implements QuestionsDAO {
         final String questions = response.body().string();
 
         this.allQuestions = this.parseQuestions(questions);
-
     }
 
     public Map<Integer, Question> parseQuestions(String questions) {
@@ -55,6 +55,7 @@ public class DBConnectionManager implements QuestionsDAO {
             } else {
                 /* Question creation - setting question, category, difficulty*/
                 final Question question = new Question();
+                question.setId(Integer.parseInt(questionSep[ID_INDEX]));
                 question.setQuestion(questionSep[QUESTION_INDEX]);
                 question.setCategory(questionSep[CATEGORY_INDEX]);
                 question.setDifficulty(Integer.parseInt(questionSep[DIFFICULTY_INDEX]));

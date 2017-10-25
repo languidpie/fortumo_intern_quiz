@@ -3,12 +3,13 @@ package quiz.db;
 import quiz.Question;
 import quiz.QuestionsDAO;
 
+import java.util.Iterator;
 import java.util.Map;
 
 public class QuestionQueue {
 
     private final Map<Integer, Question> questionMap;
-    private int count = 1;
+    private Iterator<Question> questionIterator;
 
     public QuestionQueue(QuestionsDAO questionsDAO) {
         this.questionMap = questionsDAO.findAllQuestions();
@@ -17,13 +18,11 @@ public class QuestionQueue {
     public Question nextQuestion() {
         final Question question;
 
-        if (this.count == this.questionMap.size()) {
-            question = this.questionMap.get(this.count);
-            this.count = 1;
-        } else {
-            question = this.questionMap.get(this.count);
-            this.count++;
+        if (questionIterator == null || !this.questionIterator.hasNext()) {
+            questionIterator = this.questionMap.values().iterator();
         }
+
+        question = questionIterator.next();
 
         return question;
     }

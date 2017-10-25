@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import quiz.listener.QuizContextListener;
 
 import java.io.IOException;
-import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,24 +14,18 @@ public class QuestionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-        /* Asking for user name */
-        System.out.println("What is your name?");
-        final Scanner scanner = new Scanner(System.in);
-        final String userName = scanner.nextLine();
-
-        System.out.println("Hello " + userName);
-
-        resp.setHeader("x-player-name", userName);
-
         final Question question = QuizContextListener.getQuestionQueue().nextQuestion();
 
         final GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Question.class, new QuestionSerializer());
-        gsonBuilder.setPrettyPrinting();
         final Gson gson = gsonBuilder.create();
 
-        final String json = gson.toJson(question);
+        QuestionView questionView = new QuestionView();
+        questionView.setId(question.getId());
+        questionView.setQuestion(question.getQuestion());
+        questionView.setCategory(question.getCategory());
+        questionView.setDifficulty(question.getDifficulty());
+
+        final String json = gson.toJson(questionView);
 
         /* Response */
         resp.setContentType("text/html");
@@ -40,13 +33,13 @@ public class QuestionServlet extends HttpServlet {
         resp.getWriter().write(json);
 
         /* Assert user input aka answer */
-        String answer = req.getParameter("answer");
-        if (question.getAnswers().contains(answer)) {
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("correct");
-        } else {
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("wrong");
-        }
+        //        String answer = req.getParameter("answer");
+        //        if (question.getAnswers().contains(answer)) {
+        //            resp.setStatus(HttpServletResponse.SC_OK);
+        //            resp.getWriter().write("correct");
+        //        } else {
+        //            resp.setStatus(HttpServletResponse.SC_OK);
+        //            resp.getWriter().write("wrong");
+        //        }
     }
 }
