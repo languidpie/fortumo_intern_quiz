@@ -19,7 +19,7 @@ public class QuestionServlet extends HttpServlet {
         final GsonBuilder gsonBuilder = new GsonBuilder();
         final Gson gson = gsonBuilder.create();
 
-        QuestionView questionView = new QuestionView();
+        final QuestionView questionView = new QuestionView();
         questionView.setId(question.getId());
         questionView.setQuestion(question.getQuestion());
         questionView.setCategory(question.getCategory());
@@ -31,15 +31,5 @@ public class QuestionServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().write(json);
-
-        /* Assert user input aka answer */
-        //        String answer = req.getParameter("answer");
-        //        if (question.getAnswers().contains(answer)) {
-        //            resp.setStatus(HttpServletResponse.SC_OK);
-        //            resp.getWriter().write("correct");
-        //        } else {
-        //            resp.setStatus(HttpServletResponse.SC_OK);
-        //            resp.getWriter().write("wrong");
-        //        }
     }
 }

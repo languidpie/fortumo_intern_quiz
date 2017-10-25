@@ -18,11 +18,11 @@ public class QuestionQueue {
     public Question nextQuestion() {
         final Question question;
 
-        if (questionIterator == null || !this.questionIterator.hasNext()) {
-            questionIterator = this.questionMap.values().iterator();
+        if (this.questionIterator == null || !this.questionIterator.hasNext()) {
+            this.questionIterator = this.questionMap.values().iterator();
         }
 
-        question = questionIterator.next();
+        question = this.questionIterator.next();
 
         return question;
     }

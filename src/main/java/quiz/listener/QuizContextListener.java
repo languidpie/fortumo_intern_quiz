@@ -1,5 +1,6 @@
 package quiz.listener;
 
+import quiz.AnswersServlet;
 import quiz.db.DBConnectionManager;
 import quiz.db.QuestionQueue;
 
@@ -25,6 +26,7 @@ public class QuizContextListener implements ServletContextListener {
         try {
             dbConnectionManager.load();
             questionQueue = new QuestionQueue(dbConnectionManager);
+            AnswersServlet.setQuestionMap(dbConnectionManager.findAllQuestions());
         } catch (IOException e) {
             e.printStackTrace();
         }
