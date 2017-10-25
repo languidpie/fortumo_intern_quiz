@@ -23,6 +23,20 @@ public class QuestionServlet extends HttpServlet {
         final Gson gson = gsonBuilder.create();
 
         final String json = gson.toJson(question);
-        System.out.println(json);
+
+        /* Response */
+        resp.setContentType("text/html");
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.getWriter().write(json);
+
+        /* Assert user input aka answer */
+        String answer = req.getParameter("answer");
+        if (question.getAnswers().contains(answer)) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("correct");
+        } else {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("wrong");
+        }
     }
 }
