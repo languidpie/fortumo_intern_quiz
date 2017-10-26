@@ -1,4 +1,4 @@
-package quiz;
+package quiz.tests;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,7 +11,7 @@ public class QuizQuestions extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        resp.getWriter().write(getQuestion());
+        resp.getWriter().write(this.getQuestion());
     }
 
     public String getQuestion() {

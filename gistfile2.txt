@@ -3,3 +3,4 @@
 3;What kind of animal is the largest living creature on Earth;nature;1;Whale
 4;Which plant does the Canadian flag contain?;nature;1;Maple
 5;It's fun to stay at the...?;music;3;YMCA
+2;How long does it take for Mari-Liis to think up tests?;fortumo;3;a long time

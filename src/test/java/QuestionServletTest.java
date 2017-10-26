@@ -1,57 +1,86 @@
-
-
-import org.eclipse.jetty.testing.HttpTester;
-import org.eclipse.jetty.testing.ServletTester;
+import com.google.gson.Gson;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 import quiz.Identification;
-import quiz.QuizQuestions;
+import quiz.JettyRule;
+import quiz.Question;
+import quiz.QuestionServlet;
+import quiz.db.QuestionQueue;
+import quiz.listener.QuizContextListener;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
+import javax.servlet.http.HttpServletResponse;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 public class QuestionServletTest {
 
-    private ServletTester servletTester;
-    private HttpTester request;
-    private HttpTester response;
+    final Gson gson = new Gson();
+    final Question firstQuestion = new Question();
+
+    @Rule
+    public JettyRule jettyRuleWithId = new JettyRule(new Identification(), new QuestionServlet(), "/question");
 
     @Before
-    public void initialize() throws Exception {
-        this.servletTester = new ServletTester();
-        this.servletTester.addServlet(QuizQuestions.class, "/question");
-        this.servletTester.addFilter(Identification.class, "/question", 0);
-        this.servletTester.start();
+    public void setUp() {
+        final QuestionQueue queue = Mockito.mock(QuestionQueue.class);
 
-        this.request = new HttpTester();
-        this.response = new HttpTester();
+        this.firstQuestion.setQuestion("Test question 1");
+        this.firstQuestion.setDifficulty(1);
+        this.firstQuestion.setCategory("test_category");
+        this.firstQuestion.setAnswers(Arrays.asList("first answer", "second answer"));
+
+        when(queue.nextQuestion()).thenReturn(this.firstQuestion);
+
+        QuizContextListener.setQuestionQueue(queue);
     }
 
+    /* Testing with Identification class */
     @Test
     public void should_return_status_200() throws Exception {
-        // given
-        this.request.setMethod("GET");
-        this.request.setURI("/question");
-        this.request.setVersion("HTTP/1.0");
-        this.request.setHeader("x-player-name", "any_player_name");
+        //given
+        final Request request = new Request.Builder().url(this.jettyRuleWithId.getUrl("/question"))
+                                                     .addHeader("x-player-name", "mari-liis")
+                                                     .build();
 
-        // when
-        this.response.parse(this.servletTester.getResponses(this.request.generate()));
+        //when
+        final Response response = this.jettyRuleWithId.makeRequest(request);
 
-        // then
-        assertThat(this.response.getStatus()).isEqualTo(200);
+        //then
+        assertEquals(HttpServletResponse.SC_OK, response.code());
     }
 
     @Test
     public void should_return_status_400_when_header_is_missing() throws Exception {
-        // given
-        this.request.setMethod("GET");
-        this.request.setURI("/question");
-        this.request.setVersion("HTTP/1.0");
+        //given
+        final Request request = new Request.Builder().url(this.jettyRuleWithId.getUrl("/question")).build();
 
-        // when
-        this.response.parse(this.servletTester.getResponses(this.request.generate()));
+        //when
+        final Response response = this.jettyRuleWithId.makeRequest(request);
 
-        // then
-        assertThat(this.response.getStatus()).isEqualTo(400);
+        //then
+        assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.code());
+    }
+
+    @Rule
+    public JettyRule jettyRule = new JettyRule(new QuestionServlet(), "/question");
+
+    @Test
+    public void should_return_correct_response_body_when_status_is_200() throws Exception {
+        //given
+        final Request request = new Request.Builder().url(this.jettyRule.getUrl("/question")).build();
+
+        //when
+        final Response response = this.jettyRule.makeRequest(request);
+        final Question respQuestion = this.gson.fromJson(response.body().string(), Question.class);
+
+        //then
+        assertEquals(HttpServletResponse.SC_OK, response.code());
+        assertEquals(this.firstQuestion.getQuestion(), respQuestion.getQuestion());
     }
 }

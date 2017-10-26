@@ -9,26 +9,29 @@ import javax.servlet.DispatcherType;
 
 public class Main {
 
-    public static void main(String[] args) {
-        int PORT = Integer.parseInt(System.getenv("PORT"));
-        String quesitonDB = System.getenv("DATABASE");
-        Server server = new Server(PORT);
-        try {
-            ServletContextHandler servletHandler = new ServletContextHandler();
-            //            ListenerHolder listenernerHolder = new ListenerHolder(Source.EMBEDDED);
-            //            listenerHolder.setListener(new QuizContextListener(quesitonDB));
-            servletHandler.addEventListener(new QuizContextListener(quesitonDB));
+    private static final int PORT = Integer.parseInt("8080");
+    private static final String QUESTION_PATH = "/question";
+    private static final String ANSWERS_PATH = "/answer";
+    private static final String URL = "https://goo.gl/gGbvnm";
 
-            servletHandler.addFilter(Identification.class, "/question", EnumSet.of(DispatcherType.REQUEST));
+    private Main() {
+    }
 
-            servletHandler.addServlet(QuizQuestions.class, "/question");
-            server.setHandler(servletHandler);
+    public static void main(String[] args) throws Exception {
 
-            server.start();
-            server.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Something went wrong during server start");
-        }
+        final ServletContextHandler servletHandler = new ServletContextHandler();
+
+        servletHandler.addEventListener(new QuizContextListener(URL));
+        servletHandler.addFilter(Identification.class, QUESTION_PATH, EnumSet.of(DispatcherType.REQUEST));
+
+        servletHandler.addServlet(QuestionServlet.class, QUESTION_PATH);
+        servletHandler.addFilter(Identification.class, ANSWERS_PATH, EnumSet.of(DispatcherType.FORWARD));
+        servletHandler.addServlet(AnswersServlet.class, ANSWERS_PATH);
+
+        final Server server = new Server(PORT);
+
+        server.setHandler(servletHandler);
+        server.start();
+        server.join();
     }
 }

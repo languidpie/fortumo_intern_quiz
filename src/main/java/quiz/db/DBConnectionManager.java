@@ -10,142 +10,86 @@ import quiz.QuestionsDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
-// Class for db layer
 public class DBConnectionManager implements QuestionsDAO {
 
+    private static final int ID_INDEX = 0;
+    private static final int QUESTION_INDEX = 1;
+    private static final int CATEGORY_INDEX = 2;
+    private static final int DIFFICULTY_INDEX = 3;
+    private static final int ANSWER_INDEX = 4;
+    private static final int MULTIPLE_ANSWER_INDEX = 5;
     private final String dbURL;
     private final OkHttpClient okHttpClient = new OkHttpClient();
-    public Request request;
-    private Call call;
-    private String name = "";
-    private String questions;
     private Map<Integer, Question> allQuestions;
-    int count = 0;
 
     public DBConnectionManager(String dbURL) {
         this.dbURL = dbURL;
     }
 
     public void load() throws IOException {
-        this.request = new Request.Builder().url(this.dbURL).build();
-        this.call = this.okHttpClient.newCall(this.request);
-        Response response = this.call.execute();
+        final Request request = new Request.Builder().url(this.dbURL).build();
+        final Call call = this.okHttpClient.newCall(request);
+        final Response response = call.execute();
 
-        this.questions = response.body().string();
+        final String questions = response.body().string();
 
-        if (name.isEmpty()) {
-            System.out.println("What is your name?");
-            Scanner scanner = new Scanner(System.in);
-            name = scanner.nextLine();
-        }
-
-        System.out.println("Hello " + name);
-
-        allQuestions = this.findAllQuestions();
-
-        questionGame();
+        this.allQuestions = this.parseQuestions(questions);
     }
 
-    private void questionGame() {
+    public Map<Integer, Question> parseQuestions(String questions) {
 
-        if (count < allQuestions.size()) {
-            if (showQuestion()) {
-                System.out.println("Congratulations! Do you want another question? y/n");
-                Scanner scanner = new Scanner(System.in);
-                String reply = scanner.nextLine();
-                if (reply.equals("y")) {
-                    questionGame();
-                } else if (reply.equals("n")) {
-                    call.cancel();
-                } else {
-                    System.out.println("Something went wrong. The game will now exit.");
-                    call.cancel();
-                }
-            } else {
-                System.out.println("Oops, that was wrong. Do you want to try again? y/n");
-                Scanner scanner = new Scanner(System.in);
-                String reply = scanner.nextLine();
-                if (reply.equals("y")) {
-                    questionGame();
-                } else if (reply.equals("n")) {
-                    call.cancel();
-                } else {
-                    System.out.println("Something went wrong. The game will now exit.");
-                    call.cancel();
-                }
-            }
-        }
-    }
+        final Map<Integer, Question> result = new HashMap<>();
 
-    @Override
-    public Map<Integer, Question> findAllQuestions() {
-        Map<Integer, Question> result = new HashMap<>();
-
-        String[] list = this.questions.split("\n");
+        final String[] list = questions.split("\n");
 
         for (String string : list) {
-            String[] questionSep = string.split(";");
+            final String[] questionSep = string.split(";");
+
+            /* Checks if a question with the given id already exists */
+
             if (result.containsKey(Integer.parseInt(questionSep[0]))) {
+
                 System.out.println("Question with this id already exists!");
             } else {
-                Question question = new Question();
-                question.setQuestion(questionSep[1]);
-                question.setCategory(questionSep[2]);
-                question.setDifficulty(Integer.parseInt(questionSep[3]));
-                if (questionSep.length > 5) {
-                    question.addAnswer(questionSep[4]);
+
+                /* Question creation - setting question, category, difficulty*/
+                final Question question = new Question();
+
+                question.setId(Integer.parseInt(questionSep[ID_INDEX]));
+                question.setQuestion(questionSep[QUESTION_INDEX]);
+                question.setCategory(questionSep[CATEGORY_INDEX]);
+                question.setDifficulty(Integer.parseInt(questionSep[DIFFICULTY_INDEX]));
+
+                /* Checks if there are multiple answers */
+                if (questionSep.length < MULTIPLE_ANSWER_INDEX) {
+
+                    /* Adds one answer if there are no multiple answers */
+                    question.addAnswer(questionSep[ANSWER_INDEX]);
                 } else {
-                    List<String> answers = new ArrayList<>();
-                    String[] givenAnswers = Arrays.copyOfRange(questionSep, 4, questionSep.length);
-                    for (String answer : givenAnswers) {
-                        answers.add(answer);
-                    }
+                    /* Adds multiple answers if there are any */
+                    final List<String> answers = new ArrayList<>();
+
+                    final String[] givenAnswers = Arrays.copyOfRange(questionSep, 4, questionSep.length);
+
+                    Collections.addAll(answers, givenAnswers);
                     question.setAnswers(answers);
                 }
-                int questionId = Integer.parseInt(questionSep[0]);
+                /* Parses question id and adds it to the result list with the corresponding question */
+                final int questionId = Integer.parseInt(questionSep[0]);
+
                 result.put(questionId, question);
             }
         }
         return result;
     }
 
-    public Boolean showQuestion() {
-        List<Integer> questId = getQuestionId();
-
-        Question question = allQuestions.get(questId.get(count));
-        System.out.println("("
-                + String.valueOf(question.getDifficulty())
-                + ","
-                + question.getCategory().toString()
-                + ") "
-                + question.getQuestion().toString());
-
-        String answer = askUserAnwser();
-
-        count++;
-        if (count > questId.size()) {
-            count = 0;
-        }
-        return question.getAnswers().contains(answer);
-    }
-
-    private String askUserAnwser() {
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.next();
-
-        return s;
-    }
-
-    private List<Integer> getQuestionId() {
-        List<Integer> questionIds = new ArrayList<>();
-
-        questionIds.addAll(allQuestions.keySet());
-
-        return questionIds;
+    @Override
+    public Map<Integer, Question> findAllQuestions() {
+        return this.allQuestions;
     }
 }

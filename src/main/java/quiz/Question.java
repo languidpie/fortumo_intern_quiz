@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Question {
 
+    private int id;
     private String question;
     private String category;
     private int difficulty;
@@ -43,7 +44,7 @@ public class Question {
     }
 
     public void addAnswer(String answer) {
-        if (answers == null) {
+        if (this.answers == null) {
             this.answers = new ArrayList<>();
         }
         this.answers.add(answer);
@@ -51,11 +52,20 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" +
-                "question='" + question + '\'' +
-                ", category='" + category + '\'' +
-                ", difficulty=" + difficulty +
-                ", answers=" + answers +
-                '}';
+        return "Question{"
+                + "id='" + this.id + '\''
+                + "question='" + this.question + '\''
+                + ", category='" + this.category + '\''
+                + ", difficulty=" + this.difficulty
+                + ", answers=" + this.answers
+                + '}';
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
