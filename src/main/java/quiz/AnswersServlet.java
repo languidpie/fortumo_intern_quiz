@@ -1,6 +1,7 @@
 package quiz;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import quiz.view.AnswerView;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class AnswersServlet extends HttpServlet {
 
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(assertion);
-        } catch (NullPointerException e) {
+        } catch (JsonSyntaxException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Invalid input!");
         }
