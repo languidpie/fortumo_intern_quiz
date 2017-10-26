@@ -21,6 +21,7 @@ public class QuestionServlet extends HttpServlet {
         final Gson gson = gsonBuilder.create();
 
         final QuestionView questionView = new QuestionView();
+
         questionView.setId(question.getId());
         questionView.setQuestion(question.getQuestion());
         questionView.setCategory(question.getCategory());

@@ -21,10 +21,14 @@ public class AnswersServlet extends HttpServlet {
 
         try {
             final AnswerView answerView = new Gson().fromJson(answer, AnswerView.class);
+
             final AnswerAssertion answerAssertion = new AnswerAssertion();
-            String assertion = answerAssertion.assertAnswer(questionMap, answerView);
+
+            final String assertion = answerAssertion.assertAnswer(questionMap, answerView);
+
+            resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(assertion);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Invalid input!");
         }

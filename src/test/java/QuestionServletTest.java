@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 public class QuestionServletTest {
 
-    private Gson gson = new Gson();
+    final Gson gson = new Gson();
     final Question firstQuestion = new Question();
 
     @Rule
@@ -29,34 +29,41 @@ public class QuestionServletTest {
     @Before
     public void setUp() {
         final QuestionQueue queue = Mockito.mock(QuestionQueue.class);
-        firstQuestion.setQuestion("Test question 1");
-        firstQuestion.setDifficulty(1);
-        firstQuestion.setCategory("test_category");
-        firstQuestion.setAnswers(Arrays.asList("first answer", "second answer"));
-        when(queue.nextQuestion()).thenReturn(firstQuestion);
+
+        this.firstQuestion.setQuestion("Test question 1");
+        this.firstQuestion.setDifficulty(1);
+        this.firstQuestion.setCategory("test_category");
+        this.firstQuestion.setAnswers(Arrays.asList("first answer", "second answer"));
+
+        when(queue.nextQuestion()).thenReturn(this.firstQuestion);
+
         QuizContextListener.setQuestionQueue(queue);
     }
 
     /* Testing with Identification class */
     @Test
     public void should_return_status_200() throws Exception {
-        // test
+        //given
         final Request request = new Request.Builder().url(this.jettyRuleWithId.getUrl("/question"))
                                                      .addHeader("x-player-name", "mari-liis")
                                                      .build();
+
+        //when
         final Response response = this.jettyRuleWithId.makeRequest(request);
 
-        // assert
+        //then
         assertEquals(HttpServletResponse.SC_OK, response.code());
     }
 
     @Test
     public void should_return_status_400_when_header_is_missing() throws Exception {
-        //test
+        //given
         final Request request = new Request.Builder().url(this.jettyRuleWithId.getUrl("/question")).build();
+
+        //when
         final Response response = this.jettyRuleWithId.makeRequest(request);
 
-        //assert
+        //then
         assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.code());
     }
 
@@ -65,14 +72,15 @@ public class QuestionServletTest {
 
     @Test
     public void should_return_correct_response_body_when_status_is_200() throws Exception {
-        //test
+        //given
         final Request request = new Request.Builder().url(this.jettyRule.getUrl("/question")).build();
+
+        //when
         final Response response = this.jettyRule.makeRequest(request);
+        final Question respQuestion = this.gson.fromJson(response.body().string(), Question.class);
 
-        Question respQuestion = this.gson.fromJson(response.body().string(), Question.class);
-
-        //assert
+        //then
         assertEquals(HttpServletResponse.SC_OK, response.code());
-        assertEquals();
+        assertEquals(this.firstQuestion.getQuestion(), respQuestion.getQuestion());
     }
 }
