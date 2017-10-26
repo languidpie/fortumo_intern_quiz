@@ -20,7 +20,6 @@ import static org.junit.Assert.assertTrue;
 public class DBConnectionManagerTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final DBConnectionManager dbConnectionManager = new DBConnectionManager("");
 
     @Test
@@ -71,12 +70,10 @@ public class DBConnectionManagerTest {
     @Before
     public void setUpStreams() {
         System.setOut(new PrintStream(this.outContent));
-        System.setErr(new PrintStream(this.errContent));
     }
 
     @After
     public void cleanUpStreams() {
         System.setOut(null);
-        System.setErr(null);
     }
 }
