@@ -1,58 +1,78 @@
-//
-//
-//import org.eclipse.jetty.testing.HttpTester;
-//import org.eclipse.jetty.testing.ServletTester;
-//import org.junit.Before;
-//import org.junit.Test;
-//import quiz.Identification;
-//import quiz.tests.QuizQuestions;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//
-//public class QuestionServletTest {
-//
-//    private ServletTester servletTester;
-//    private HttpTester request;
-//    private HttpTester response;
-//
-//    @Before
-//    public void initialize() throws Exception {
-//        this.servletTester = new ServletTester();
-//        this.servletTester.addServlet(QuizQuestions.class, "/question");
-//        this.servletTester.addFilter(Identification.class, "/question", 0);
-//        this.servletTester.start();
-//
-//        this.request = new HttpTester();
-//        this.response = new HttpTester();
-//    }
-//
-//    //TODO: Find out why ByteArrayBuffer is missing
-//    @Test
-//    public void should_return_status_200() throws Exception {
-//        // given
-//        this.request.setMethod("GET");
-//        this.request.setURI("/question");
-//        this.request.setVersion("HTTP/1.0");
-//        this.request.setHeader("x-player-name", "any_player_name");
-//
-//        // when
-//        this.response.parse(this.servletTester.getResponses(this.request.generate()));
-//
-//        // then
-//        assertThat(this.response.getStatus()).isEqualTo(200);
-//    }
-//
-//    @Test
-//    public void should_return_status_400_when_header_is_missing() throws Exception {
-//        // given
-//        this.request.setMethod("GET");
-//        this.request.setURI("/question");
-//        this.request.setVersion("HTTP/1.0");
-//
-//        // when
-//        this.response.parse(this.servletTester.getResponses(this.request.generate()));
-//
-//        // then
-//        assertThat(this.response.getStatus()).isEqualTo(400);
-//    }
-//}
+import com.google.gson.Gson;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mockito;
+import quiz.Identification;
+import quiz.JettyRule;
+import quiz.Question;
+import quiz.QuestionServlet;
+import quiz.db.QuestionQueue;
+import quiz.listener.QuizContextListener;
+
+import java.util.Arrays;
+import javax.servlet.http.HttpServletResponse;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+public class QuestionServletTest {
+
+    private Gson gson = new Gson();
+    final Question firstQuestion = new Question();
+
+    @Rule
+    public JettyRule jettyRuleWithId = new JettyRule(new Identification(), new QuestionServlet(), "/question");
+
+    @Before
+    public void setUp() {
+        final QuestionQueue queue = Mockito.mock(QuestionQueue.class);
+        firstQuestion.setQuestion("Test question 1");
+        firstQuestion.setDifficulty(1);
+        firstQuestion.setCategory("test_category");
+        firstQuestion.setAnswers(Arrays.asList("first answer", "second answer"));
+        when(queue.nextQuestion()).thenReturn(firstQuestion);
+        QuizContextListener.setQuestionQueue(queue);
+    }
+
+    /* Testing with Identification class */
+    @Test
+    public void should_return_status_200() throws Exception {
+        // test
+        final Request request = new Request.Builder().url(this.jettyRuleWithId.getUrl("/question"))
+                                                     .addHeader("x-player-name", "mari-liis")
+                                                     .build();
+        final Response response = this.jettyRuleWithId.makeRequest(request);
+
+        // assert
+        assertEquals(HttpServletResponse.SC_OK, response.code());
+    }
+
+    @Test
+    public void should_return_status_400_when_header_is_missing() throws Exception {
+        //test
+        final Request request = new Request.Builder().url(this.jettyRuleWithId.getUrl("/question")).build();
+        final Response response = this.jettyRuleWithId.makeRequest(request);
+
+        //assert
+        assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.code());
+    }
+
+    @Rule
+    public JettyRule jettyRule = new JettyRule(new QuestionServlet(), "/question");
+
+    @Test
+    public void should_return_correct_response_body_when_status_is_200() throws Exception {
+        //test
+        final Request request = new Request.Builder().url(this.jettyRule.getUrl("/question")).build();
+        final Response response = this.jettyRule.makeRequest(request);
+
+        Question respQuestion = this.gson.fromJson(response.body().string(), Question.class);
+
+        //assert
+        assertEquals(HttpServletResponse.SC_OK, response.code());
+        assertEquals();
+    }
+}

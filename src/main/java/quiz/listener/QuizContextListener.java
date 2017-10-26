@@ -21,6 +21,7 @@ public class QuizContextListener implements ServletContextListener {
     }
 
     @Override
+
     public void contextInitialized(ServletContextEvent sce) {
         final DBConnectionManager dbConnectionManager = new DBConnectionManager(this.url);
         try {
@@ -39,5 +40,9 @@ public class QuizContextListener implements ServletContextListener {
 
     public static QuestionQueue getQuestionQueue() {
         return questionQueue;
+    }
+
+    public static void setQuestionQueue(QuestionQueue questionQueue) {
+        QuizContextListener.questionQueue = questionQueue;
     }
 }
