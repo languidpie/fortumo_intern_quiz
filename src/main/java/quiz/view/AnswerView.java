@@ -1,4 +1,4 @@
-package quiz;
+package quiz.view;
 
 public class AnswerView {
 

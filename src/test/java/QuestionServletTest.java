@@ -5,7 +5,7 @@
 //import org.junit.Before;
 //import org.junit.Test;
 //import quiz.Identification;
-//import quiz.QuizQuestions;
+//import quiz.tests.QuizQuestions;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
 //

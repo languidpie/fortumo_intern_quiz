@@ -3,6 +3,7 @@ package quiz;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
+import quiz.view.AnswerView;
 
 import java.util.Arrays;
 import java.util.HashMap;
