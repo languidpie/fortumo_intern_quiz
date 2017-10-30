@@ -42,46 +42,33 @@ public class DBConnectionManager implements QuestionsDAO {
     }
 
     public Map<Integer, Question> parseQuestions(String questions) {
-
         final Map<Integer, Question> result = new HashMap<>();
-
         final String[] list = questions.split("\n");
-
         for (String string : list) {
             final String[] questionSep = string.split(";");
-
             /* Checks if a question with the given id already exists */
-
             if (result.containsKey(Integer.parseInt(questionSep[0]))) {
-
                 System.out.println("Question with this id already exists!");
             } else {
-
                 /* Question creation - setting question, category, difficulty*/
                 final Question question = new Question();
-
                 question.setId(Integer.parseInt(questionSep[ID_INDEX]));
                 question.setQuestion(questionSep[QUESTION_INDEX]);
                 question.setCategory(questionSep[CATEGORY_INDEX]);
                 question.setDifficulty(Integer.parseInt(questionSep[DIFFICULTY_INDEX]));
-
                 /* Checks if there are multiple answers */
                 if (questionSep.length < MULTIPLE_ANSWER_INDEX) {
-
                     /* Adds one answer if there are no multiple answers */
                     question.addAnswer(questionSep[ANSWER_INDEX]);
                 } else {
                     /* Adds multiple answers if there are any */
                     final List<String> answers = new ArrayList<>();
-
                     final String[] givenAnswers = Arrays.copyOfRange(questionSep, 4, questionSep.length);
-
                     Collections.addAll(answers, givenAnswers);
                     question.setAnswers(answers);
                 }
                 /* Parses question id and adds it to the result list with the corresponding question */
                 final int questionId = Integer.parseInt(questionSep[0]);
-
                 result.put(questionId, question);
             }
         }

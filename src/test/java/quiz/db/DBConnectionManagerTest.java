@@ -32,7 +32,7 @@ public class DBConnectionManagerTest {
         this.dbConnectionManager.parseQuestions(givenQuestions);
 
         //then
-        assertEquals("Question with this id already exists!\n", this.outContent.toString());
+        assertEquals("Question with this id already exists!", this.outContent.toString().trim());
     }
 
     @Test
