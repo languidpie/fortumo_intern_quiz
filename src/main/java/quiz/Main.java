@@ -8,8 +8,7 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 
 public class Main {
-
-    private static final int PORT = Integer.parseInt("8080");
+    ∑
     private static final String QUESTION_PATH = "/question";
     private static final String ANSWERS_PATH = "/answer";
     private static final String URL = "https://goo.gl/gGbvnm";
@@ -28,10 +27,19 @@ public class Main {
         servletHandler.addFilter(Identification.class, ANSWERS_PATH, EnumSet.of(DispatcherType.FORWARD));
         servletHandler.addServlet(AnswersServlet.class, ANSWERS_PATH);
 
-        final Server server = new Server(PORT);
+        final Server server = new Server(getPort());
 
         server.setHandler(servletHandler);
         server.start();
         server.join();
+    }
+
+    public static int getPort(){
+        String port = System.getenv("PORT");
+        if (port == null){
+            return 8080;
+        } else {
+            return Integer.parseInt(port);
+        }
     }
 }
