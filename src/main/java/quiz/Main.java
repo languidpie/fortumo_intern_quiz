@@ -8,7 +8,7 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 
 public class Main {
-    ∑
+
     private static final String QUESTION_PATH = "/question";
     private static final String ANSWERS_PATH = "/answer";
     private static final String URL = "https://goo.gl/gGbvnm";
