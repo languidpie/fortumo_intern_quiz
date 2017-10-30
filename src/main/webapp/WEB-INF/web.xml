@@ -12,4 +12,18 @@
         <servlet-name>GameServlet</servlet-name>
         <url-pattern>/play</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ReplyServlet</servlet-name>
+        <servlet-class>quiz.ReplyServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ReplyServlet</servlet-name>
+        <url-pattern>/answer</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
 </web-app>
