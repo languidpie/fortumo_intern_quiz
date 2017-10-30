@@ -1,4 +1,4 @@
-package quiz;
+package quiz.servlets;
 
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -7,6 +7,10 @@ import okhttp3.Response;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import quiz.AnswersServlet;
+import quiz.Identification;
+import quiz.JettyRule;
+import quiz.Question;
 
 import java.util.Arrays;
 import java.util.HashMap;
