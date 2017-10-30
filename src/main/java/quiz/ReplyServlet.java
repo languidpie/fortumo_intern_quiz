@@ -15,23 +15,25 @@ import javax.servlet.http.HttpServletResponse;
 public class ReplyServlet extends HttpServlet {
 
     private static final String URL_ANSWER = "https://fortumo-intern-quiz-mlp.herokuapp.com/answer";
+    private static final String NAME_ATR = "name";
     private final OkHttpClient okHttpClient = new OkHttpClient();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String questionId = req.getParameter("question_id");
         final String answer = req.getParameter("answer");
-        final String name = req.getParameter("name");
+        final String name = req.getParameter(NAME_ATR);
 
         final String json = "{\"id\":\"" + questionId + "\",\"answer\":\"" + answer + "\"}";
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("text/html"), json);
 
-        final Request request = new Request.Builder().url(URL_ANSWER).addHeader("x-player-name", name).post(requestBody).build();
+        final Request request =
+                new Request.Builder().url(URL_ANSWER).addHeader("x-player-name", name).post(requestBody).build();
         final Response response = this.okHttpClient.newCall(request).execute();
 
         req.setAttribute("reply", response.body().string());
-        req.setAttribute("name", name);
+        req.setAttribute(NAME_ATR, name);
         req.getRequestDispatcher("result.jsp").forward(req, resp);
     }
 }
