@@ -38,7 +38,13 @@ public class JettyRule extends ExternalResource {
     }
 
     public void before() throws Exception {
-        this.jettyServer = this.buildJettyServer();
+        final ServletContextHandler handler = this.buildHandler();
+
+        final Server server = new Server(this.jettyPort);
+        server.setHandler(handler);
+        server.start();
+
+        this.jettyServer = server;
     }
 
     @After
@@ -52,18 +58,14 @@ public class JettyRule extends ExternalResource {
         }
     }
 
-    protected Server buildJettyServer() throws Exception {
+    protected ServletContextHandler buildHandler() throws Exception {
         final ServletContextHandler contextHandler = new ServletContextHandler();
         if (this.filter != null) {
             contextHandler.addFilter(new FilterHolder(this.filter), this.path, EnumSet.of(DispatcherType.REQUEST));
         }
         contextHandler.addServlet(new ServletHolder(this.servlet), this.path);
 
-        final Server server = new Server(this.jettyPort);
-        server.setHandler(contextHandler);
-        server.start();
-
-        return server;
+        return contextHandler;
     }
 
     public Response makeRequest(Request request) throws IOException {
