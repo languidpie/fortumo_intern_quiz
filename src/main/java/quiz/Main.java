@@ -4,6 +4,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 import quiz.listener.QuizContextListener;
+import quiz.servlets.AnswersServlet;
+import quiz.servlets.QuestionServlet;
 
 import java.util.EnumSet;
 import javax.servlet.DispatcherType;

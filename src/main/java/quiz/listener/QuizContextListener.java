@@ -1,6 +1,6 @@
 package quiz.listener;
 
-import quiz.AnswersServlet;
+import quiz.servlets.AnswersServlet;
 import quiz.db.DBConnectionManager;
 import quiz.db.QuestionQueue;
 

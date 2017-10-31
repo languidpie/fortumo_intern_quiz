@@ -7,7 +7,6 @@ import okhttp3.Response;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import quiz.AnswersServlet;
 import quiz.Identification;
 import quiz.JettyRule;
 import quiz.Question;
@@ -23,6 +22,7 @@ public class AnswersServletTest {
 
     @Rule
     public JettyRule jettyRule = new JettyRule(new Identification(), new AnswersServlet(), "/answer");
+    // I think it should be 'result.jsp', but I'm not sure. Can check later.
 
     Map<Integer, Question> questionMap = new HashMap<>();
     Question question = new Question();

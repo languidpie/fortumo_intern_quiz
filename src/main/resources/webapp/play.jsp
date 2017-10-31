@@ -23,7 +23,7 @@
 </p>
 <p><%=question.getQuestion()%>
 </p>
-<form id="insert-answer" action="/answer" method="post">
+<form id="insert-answer" action="/reply" method="post">
     <input type="text" name="answer"><br><br>
     <input type="hidden" name="question_id" value="<%= question.getId()%>">
     <input type="hidden" name="name" value="<%= request.getSession().getAttribute("name")%>">
