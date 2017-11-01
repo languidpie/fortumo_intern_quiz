@@ -22,7 +22,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package quiz;
+package quiz.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
