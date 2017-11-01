@@ -5,22 +5,22 @@
          version="3.1">
     <servlet>
         <servlet-name>GameServlet</servlet-name>
-        <servlet-class>quiz.GameServlet</servlet-class>
+        <servlet-class>quiz.servlets.GameServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>GameServlet</servlet-name>
         <url-pattern>/play</url-pattern>
     </servlet-mapping>
-
+    
     <servlet>
         <servlet-name>ReplyServlet</servlet-name>
-        <servlet-class>quiz.ReplyServlet</servlet-class>
+        <servlet-class>quiz.servlets.ReplyServlet</servlet-class>
     </servlet>
-
+    
     <servlet-mapping>
         <servlet-name>ReplyServlet</servlet-name>
-        <url-pattern>/answer</url-pattern>
+        <url-pattern>/reply</url-pattern>
     </servlet-mapping>
 
     <session-config>

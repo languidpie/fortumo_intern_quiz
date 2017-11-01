@@ -1,7 +1,8 @@
-package quiz;
+package quiz.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import quiz.Question;
 import quiz.listener.QuizContextListener;
 import quiz.view.QuestionView;
 

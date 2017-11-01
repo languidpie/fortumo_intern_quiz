@@ -1,4 +1,4 @@
-package quiz;
+package quiz.servlets;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

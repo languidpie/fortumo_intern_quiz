@@ -1,7 +1,9 @@
-package quiz;
+package quiz.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import quiz.AnswerAssertion;
+import quiz.Question;
 import quiz.view.AnswerView;
 
 import java.io.IOException;

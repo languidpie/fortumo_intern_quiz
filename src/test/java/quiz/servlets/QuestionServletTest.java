@@ -1,3 +1,5 @@
+package quiz.servlets;
+
 import com.google.gson.Gson;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -8,7 +10,6 @@ import org.mockito.Mockito;
 import quiz.Identification;
 import quiz.JettyRule;
 import quiz.Question;
-import quiz.QuestionServlet;
 import quiz.db.QuestionQueue;
 import quiz.listener.QuizContextListener;
 
