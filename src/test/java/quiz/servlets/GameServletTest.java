@@ -47,7 +47,7 @@ public class GameServletTest {
     @Test
     public void should_return_200_when_question_is_returned() throws IOException {
         final HttpSession httpSession = Mockito.mock(HttpSession.class);
-        Mockito.when(httpSession.getAttribute(eq("name"))).thenReturn("mari-liis");
+        Mockito.when(httpSession.getAttribute(eq("user_name"))).thenReturn("mari-liis");
         Mockito.when(this.jettyRule.getSessionManager().newHttpSession(any())).thenReturn(httpSession);
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("text/html"), "lala");
