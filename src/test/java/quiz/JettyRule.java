@@ -4,11 +4,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.SessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.rules.ExternalResource;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,6 +29,7 @@ public class JettyRule extends ExternalResource {
     private final String path;
 
     private Server jettyServer;
+    private final SessionManager sessionManager = Mockito.mock(SessionManager.class);
 
     public JettyRule(HttpServlet servlet, String path) {
         this(null, servlet, path);
@@ -64,6 +68,7 @@ public class JettyRule extends ExternalResource {
             contextHandler.addFilter(new FilterHolder(this.filter), this.path, EnumSet.of(DispatcherType.REQUEST));
         }
         contextHandler.addServlet(new ServletHolder(this.servlet), this.path);
+        contextHandler.setSessionHandler(new SessionHandler(this.getSessionManager()));
 
         return contextHandler;
     }
@@ -74,5 +79,9 @@ public class JettyRule extends ExternalResource {
 
     public String getUrl(String path) throws MalformedURLException {
         return this.jettyServer.getURI().toURL().toString().replaceAll("/$", "") + path;
+    }
+
+    public SessionManager getSessionManager() {
+        return this.sessionManager;
     }
 }
